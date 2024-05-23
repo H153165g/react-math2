@@ -52,19 +52,38 @@ export default function Chart(data1) {
     const colormod = d3.scaleOrdinal(d3.schemeCategory10)
     const colors = new Set(data.map(({ species }) => species))
     const col = Array.from(colors)
-    console.log(col[0])
 
     const [dataM, setData1] = useState(Array.from({ length: col.length }).map((_,i) => data.filter((item) =>{
-        console.log(item.species,i)
+        
         return item.species == col[i]})))
     const [count, setCount] = useState(Array.from({ length: col.length }).map(() => true))
 
-    console.log(dataM)
 
 
     const color = Array.from({ length: col.length }).map((_, i) => {
         return colormod(i)
     })
+
+    const x=typex.split("l");
+    const y=typey.split("l")
+
+    const [x1,setx]=useState(1)
+    const [y1,sety]=useState(1)
+    
+    useEffect(() => {
+        (async () => {
+            if(x[1]=="Width"){
+                setx(5)
+            } else if(x[1]=="Length"){
+                setx(2)
+            }
+            if(y[1]=="Width"){
+                sety(5)
+            } else if(y[1]=="Length"){
+                sety(2)
+            }
+        })();
+      }, [typex,typey]);
     const xmin = d3.min(data.map((data) => {
         return (data[typex])
     }))
@@ -86,11 +105,13 @@ export default function Chart(data1) {
         .domain([Math.floor(ymin), Math.floor(ymax) + 1])
         .range([0, height - 40])
         .nice()
-    const X = Array.from({ length: (Math.floor(xmax) + 1 - Math.floor(xmin)) * 2 + 1 }).map((_, i) => {
-        return i / 2 + Math.floor(xmin);
+  
+
+    const X = Array.from({ length: (Math.floor(xmax) + 1 - Math.floor(xmin)) * x1 + 1 }).map((_, i) => {
+        return i / x1 + Math.floor(xmin);
     })
-    const Y = Array.from({ length: (Math.floor(ymax) + 1 - Math.floor(ymin)) * 5 + 1 }).map((_, i) => {
-        return i / 5 + Math.floor(ymin);
+    const Y = Array.from({ length: (Math.floor(ymax) + 1 - Math.floor(ymin)) * y1 + 1 }).map((_, i) => {
+        return i / y1 + Math.floor(ymin);
     })
 
 
