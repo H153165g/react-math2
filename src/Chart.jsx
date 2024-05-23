@@ -35,7 +35,7 @@ export default function Chart(data1) {
                 if (item) {
                     return false;
                 } else {
-                    setData1(data)
+                    setData1(()=>data)
                     console.log("A")
                     return true;
                 }
@@ -59,15 +59,18 @@ export default function Chart(data1) {
     const col = Array.from(colors)
     
     const [count, setCount] = useState(Array.from({ length: col.length }).map(() => true))
-
-    for(let j=0;j<count.length;j++){
-        console.log(count[j])
-        if (count[j]==false) {
-            console.log(dataM.filter((item) => item.species != col[j]))
-        }
-    }
+    useEffect(() => {
+        (async () => {
+            for(let j=0;j<count.length;j++){
+                if (count[j]==false) {
+                    setData1(()=>dataM.filter((item) => item.species != col[j]))
+                }
+            }
+        })();
+      }, [count]);
+      console.log(count)
     
-    console.log(count)
+    
     const color = Array.from({ length: col.length }).map((_, i) => {
         return colormod(i)
     })
