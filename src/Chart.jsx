@@ -97,22 +97,24 @@ export default function Chart(data1) {
         return (data[typey])
     }))
 
+    
+  
+
+    const X = Array.from({ length: x1==5?(Math.floor(xmax*10)/10  - Math.floor(xmin)) * x1 + 2: (Math.floor(xmax*10)/10  - Math.floor(xmin)) * x1 + 2}).map((_, i) => {
+        return i / x1 + Math.floor(xmin);
+    })
+    const Y = Array.from({ length: y1==5?(Math.floor(ymax*10)/10  - Math.floor(ymin)) * y1 + 2: (Math.floor(ymax*10)/10  - Math.floor(ymin)) * y1 + 2}).map((_, i) => {
+        return i / y1 + Math.floor(ymin);
+    })
+    console.log(X[X.length-1],Y[Y.length-1])
     const xScale = d3.scaleLinear()
-        .domain([Math.floor(xmin), Math.floor(xmax) + 1])
+        .domain([X[0],X[X.length-1] ])
         .range([0, width - 40])
         .nice()
     const yScale = d3.scaleLinear()
-        .domain([Math.floor(ymin), Math.floor(ymax) + 1])
+        .domain([Y[0],Y[Y.length-1]])
         .range([0, height - 40])
         .nice()
-  
-
-    const X = Array.from({ length: (Math.floor(xmax) + 1 - Math.floor(xmin)) * x1 + 1 }).map((_, i) => {
-        return i / x1 + Math.floor(xmin);
-    })
-    const Y = Array.from({ length: (Math.floor(ymax) + 1 - Math.floor(ymin)) * y1 + 1 }).map((_, i) => {
-        return i / y1 + Math.floor(ymin);
-    })
 
 
 
