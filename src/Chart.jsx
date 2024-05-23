@@ -13,9 +13,8 @@ const COLO = (col, item, color) => {
 
 export default function Chart(data1) {
 
-    const [data,setData]=useState(data1["data"])
-    const [dataM, setData1] = useState(data)
-    const types = Object.getOwnPropertyNames(dataM[0])
+    const [data, setData] = useState(data1["data"])
+    const types = Object.getOwnPropertyNames(data[0])
     types.pop()
     const [typex, setTypeX] = useState(types[0])
     const [typey, setTypeY] = useState(types[1])
@@ -30,19 +29,20 @@ export default function Chart(data1) {
     }
 
     function handleClick(i, count) {
-        setCount(()=>count.map((item, j) => {
+        setCount(() => count.map((item, j) => {
             if (i == j) {
                 if (item) {
                     return false;
                 } else {
+
                     return true;
                 }
             } else {
                 return count[j]
             }
 
-        }))   
-        
+        }))
+
     }
 
 
@@ -52,23 +52,19 @@ export default function Chart(data1) {
     const colormod = d3.scaleOrdinal(d3.schemeCategory10)
     const colors = new Set(data.map(({ species }) => species))
     const col = Array.from(colors)
-    
-    
-    
-    
-    const colo = Array.from({ length: col.length }).map((_, i) => {
+    console.log(col[0])
+
+    const [dataM, setData1] = useState(Array.from({ length: col.length }).map((_,i) => data.filter((item) =>{
+        console.log(item.species,i)
+        return item.species == col[i]})))
+    const [count, setCount] = useState(Array.from({ length: col.length }).map(() => true))
+
+    console.log(dataM)
+
+
+    const color = Array.from({ length: col.length }).map((_, i) => {
         return colormod(i)
     })
-    
-    const [color,setcolor]=useState(colo)
-    const [count, setCount] = useState(Array.from({ length: col.length }).map(() => true))
-    useEffect(() => {
-        (async () => {
-            setcolor(color.map((item,i)=>count[i]?colo[i]:"white"))
-            
-        })();
-      }, [count]);
-      console.log(color)
     const xmin = d3.min(data.map((data) => {
         return (data[typex])
     }))
@@ -149,15 +145,19 @@ export default function Chart(data1) {
                 <line x1="40" y1={height} x2={width} y2={height} stroke="black" />
 
                 {dataM.map((item, i) => {
-                    return (
-                        <circle cx={xScale(item[typex]) + 40} cy={height - yScale(item[typey])} r="5" fill={COLO(col, item.species, color)} />
-                    )
+                    if (count[i]) {
+                        return (item.map((items)=>
+                            <circle cx={xScale(items[typex]) + 40} cy={height - yScale(items[typey])} r="5" fill={COLO(col, items.species, color)} />
+                        ))
+                    } else {
+                        return;
+                    }
                 })}
 
                 {col.map((item, i) => {
                     return (
                         <g onClick={() => handleClick(i, count)}>
-                            <rect key={item} x={width + 1} y={40 + i * 15} width="10" height="10" fill={colo[i]} />
+                            <rect key={item} x={width + 1} y={40 + i * 15} width="10" height="10" fill={color[i]} />
                             <text x={width + 15} y={40 + i * 15 + 10} fontSize="13" textAnchor="left" fill="black" strokeWidth="3" >{item}</text>
 
                         </g>)
