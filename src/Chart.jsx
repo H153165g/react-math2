@@ -46,18 +46,9 @@ export default function Chart(data1) {
         }));
 
 
-        for(let j=0;j<count.length;j++){
-            console.log(count[j])
-            if (count[j]==false) {
-                console.log(dataM.filter((item) => item.species != col[j]))
-            }
-        }
+        
         
     }
-
-
-
-
 
 
     const width = 500
@@ -66,7 +57,15 @@ export default function Chart(data1) {
     const colormod = d3.scaleOrdinal(d3.schemeCategory10)
     const colors = new Set(data.map(({ species }) => species))
     const col = Array.from(colors)
+    
     const [count, setCount] = useState(Array.from({ length: col.length }).map(() => true))
+
+    for(let j=0;j<count.length;j++){
+        console.log(count[j])
+        if (count[j]==false) {
+            console.log(dataM.filter((item) => item.species != col[j]))
+        }
+    }
     
     console.log(count)
     const color = Array.from({ length: col.length }).map((_, i) => {
