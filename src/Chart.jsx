@@ -100,10 +100,10 @@ export default function Chart(data1) {
     
   
 
-    const X = Array.from({ length: x1==5?(Math.floor(xmax*10)/10  - Math.floor(xmin)) * x1 + 2: (Math.floor(xmax*10)/10  - Math.floor(xmin)) * x1 + 2}).map((_, i) => {
+    const X = Array.from({ length: (Math.floor(xmax*10)/10  - Math.floor(xmin)) * x1 + 2}).map((_, i) => {
         return i / x1 + Math.floor(xmin);
     })
-    const Y = Array.from({ length: y1==5?(Math.floor(ymax*10)/10  - Math.floor(ymin)) * y1 + 2: (Math.floor(ymax*10)/10  - Math.floor(ymin)) * y1 + 2}).map((_, i) => {
+    const Y = Array.from({ length: (Math.floor(ymax*10)/10  - Math.floor(ymin)) * y1 + 2}).map((_, i) => {
         return i / y1 + Math.floor(ymin);
     })
     console.log(X[X.length-1],Y[Y.length-1])
